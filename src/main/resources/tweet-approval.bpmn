@@ -29,7 +29,7 @@
       <bpmn:incoming>SequenceFlow_1i5hp9i</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1a3kmxa</bpmn:outgoing>
     </bpmn:manualTask>
-    <bpmn:serviceTask id="Task_0lfmlyu" name="Publish Tweet" camunda:class="com.camunda.training.CreateTweetDelegate">
+    <bpmn:serviceTask id="Task_0lfmlyu" name="Publish Tweet" camunda:asyncBefore="true" camunda:class="com.camunda.training.CreateTweetDelegate">
       <bpmn:incoming>SequenceFlow_0tdxfrz</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0qx1i7f</bpmn:outgoing>
     </bpmn:serviceTask>
