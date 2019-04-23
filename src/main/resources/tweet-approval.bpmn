@@ -4,13 +4,13 @@
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>SequenceFlow_1urib49</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1urib49" sourceRef="StartEvent_1" targetRef="Task_1refpd8" />
+    <bpmn:sequenceFlow id="SequenceFlow_1urib49" sourceRef="StartEvent_1" targetRef="UserTask_ReviewTweet" />
     <bpmn:exclusiveGateway id="ExclusiveGateway_0cxm917" name="Tweet approved?">
       <bpmn:incoming>SequenceFlow_1ovm1ao</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0tdxfrz</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_1i5hp9i</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="SequenceFlow_1ovm1ao" sourceRef="Task_1refpd8" targetRef="ExclusiveGateway_0cxm917" />
+    <bpmn:sequenceFlow id="SequenceFlow_1ovm1ao" sourceRef="UserTask_ReviewTweet" targetRef="ExclusiveGateway_0cxm917" />
     <bpmn:sequenceFlow id="SequenceFlow_0tdxfrz" name="yes" sourceRef="ExclusiveGateway_0cxm917" targetRef="Task_0lfmlyu">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -29,14 +29,14 @@
       <bpmn:incoming>SequenceFlow_1i5hp9i</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1a3kmxa</bpmn:outgoing>
     </bpmn:manualTask>
-    <bpmn:manualTask id="Task_1refpd8" name="Review Tweet">
-      <bpmn:incoming>SequenceFlow_1urib49</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1ovm1ao</bpmn:outgoing>
-    </bpmn:manualTask>
     <bpmn:serviceTask id="Task_0lfmlyu" name="Publish Tweet" camunda:class="com.camunda.training.CreateTweetDelegate">
       <bpmn:incoming>SequenceFlow_0tdxfrz</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0qx1i7f</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:userTask id="UserTask_ReviewTweet" name="Review Tweet" camunda:candidateGroups="management">
+      <bpmn:incoming>SequenceFlow_1urib49</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ovm1ao</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="TweetApprovalProcess">
@@ -95,11 +95,11 @@
       <bpmndi:BPMNShape id="ManualTask_062xvrx_di" bpmnElement="Task_15naphk">
         <dc:Bounds x="515" y="247" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ManualTask_1u4cc36_di" bpmnElement="Task_1refpd8">
-        <dc:Bounds x="265" y="137" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_09b4tu8_di" bpmnElement="Task_0lfmlyu">
         <dc:Bounds x="515" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_1mzp0lb_di" bpmnElement="UserTask_ReviewTweet">
+        <dc:Bounds x="265" y="137" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
