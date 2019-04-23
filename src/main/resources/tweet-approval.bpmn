@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_03lu6z5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.0.1">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_03lu6z5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.0.1">
   <bpmn:process id="TweetApprovalProcess" name="Tweet Approval" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>SequenceFlow_1urib49</bpmn:outgoing>
@@ -29,15 +29,14 @@
       <bpmn:incoming>SequenceFlow_1i5hp9i</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1a3kmxa</bpmn:outgoing>
     </bpmn:manualTask>
-    <bpmn:scriptTask id="Task_0lfmlyu" name="Publish Tweet">
-      <bpmn:incoming>SequenceFlow_0tdxfrz</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0qx1i7f</bpmn:outgoing>
-      <bpmn:script>print('Hello World\n');</bpmn:script>
-    </bpmn:scriptTask>
     <bpmn:manualTask id="Task_1refpd8" name="Review Tweet">
       <bpmn:incoming>SequenceFlow_1urib49</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1ovm1ao</bpmn:outgoing>
     </bpmn:manualTask>
+    <bpmn:serviceTask id="Task_0lfmlyu" name="Publish Tweet" camunda:class="com.camunda.training.CreateTweetDelegate">
+      <bpmn:incoming>SequenceFlow_0tdxfrz</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0qx1i7f</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="TweetApprovalProcess">
@@ -96,11 +95,11 @@
       <bpmndi:BPMNShape id="ManualTask_062xvrx_di" bpmnElement="Task_15naphk">
         <dc:Bounds x="515" y="247" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ScriptTask_0410d3x_di" bpmnElement="Task_0lfmlyu">
-        <dc:Bounds x="515" y="137" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ManualTask_1u4cc36_di" bpmnElement="Task_1refpd8">
         <dc:Bounds x="265" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_09b4tu8_di" bpmnElement="Task_0lfmlyu">
+        <dc:Bounds x="515" y="137" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
