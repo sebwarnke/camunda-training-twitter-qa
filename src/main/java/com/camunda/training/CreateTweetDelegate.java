@@ -15,7 +15,7 @@ public class CreateTweetDelegate implements JavaDelegate {
 
   public void execute(DelegateExecution execution) throws Exception {
  
-    String content = "I did it! Cheers Sebastian";
+    String content = (String) execution.getVariable("content");
     
     log.info("Publishing tweet: " + content);
     
