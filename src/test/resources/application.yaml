@@ -1,0 +1,10 @@
+spring.h2.console.enabled: true
+camunda.bpm:
+  admin-user:
+    id: demo
+    password: demo
+    firstName: Demo
+    lastName: Demo
+  filter:
+    create: All Tasks
+server.port: 8080
