@@ -5,16 +5,16 @@
       <bpmn:outgoing>SequenceFlow_1urib49</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1urib49" sourceRef="StartEvent_1" targetRef="UserTask_ReviewTweet" />
-    <bpmn:exclusiveGateway id="ExclusiveGateway_0cxm917" name="Tweet approved?">
+    <bpmn:exclusiveGateway id="ExclusiveGateway_TweetApproved" name="Tweet approved?">
       <bpmn:incoming>SequenceFlow_1ovm1ao</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0tdxfrz</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_1i5hp9i</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="SequenceFlow_1ovm1ao" sourceRef="UserTask_ReviewTweet" targetRef="ExclusiveGateway_0cxm917" />
-    <bpmn:sequenceFlow id="SequenceFlow_0tdxfrz" name="yes" sourceRef="ExclusiveGateway_0cxm917" targetRef="Task_0lfmlyu">
+    <bpmn:sequenceFlow id="SequenceFlow_1ovm1ao" sourceRef="UserTask_ReviewTweet" targetRef="ExclusiveGateway_TweetApproved" />
+    <bpmn:sequenceFlow id="SequenceFlow_0tdxfrz" name="yes" sourceRef="ExclusiveGateway_TweetApproved" targetRef="Task_0lfmlyu">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="SequenceFlow_1i5hp9i" name="no" sourceRef="ExclusiveGateway_0cxm917" targetRef="Task_15naphk">
+    <bpmn:sequenceFlow id="SequenceFlow_1i5hp9i" name="no" sourceRef="ExclusiveGateway_TweetApproved" targetRef="Task_GiveFeedback">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="EndEvent_1r80xj7" name="Tweet published">
@@ -24,8 +24,8 @@
     <bpmn:endEvent id="EndEvent_0ez8j95" name="Tweet rejected">
       <bpmn:incoming>SequenceFlow_1a3kmxa</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1a3kmxa" sourceRef="Task_15naphk" targetRef="EndEvent_0ez8j95" />
-    <bpmn:manualTask id="Task_15naphk" name="Give Feedback">
+    <bpmn:sequenceFlow id="SequenceFlow_1a3kmxa" sourceRef="Task_GiveFeedback" targetRef="EndEvent_0ez8j95" />
+    <bpmn:manualTask id="Task_GiveFeedback" name="Give Feedback">
       <bpmn:incoming>SequenceFlow_1i5hp9i</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1a3kmxa</bpmn:outgoing>
     </bpmn:manualTask>
@@ -47,7 +47,7 @@
         <di:waypoint x="215" y="177" />
         <di:waypoint x="265" y="177" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ExclusiveGateway_0cxm917_di" bpmnElement="ExclusiveGateway_0cxm917" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="ExclusiveGateway_0cxm917_di" bpmnElement="ExclusiveGateway_TweetApproved" isMarkerVisible="true">
         <dc:Bounds x="415" y="152" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="397" y="128" width="85" height="14" />
@@ -92,7 +92,7 @@
         <di:waypoint x="615" y="287" />
         <di:waypoint x="665" y="287" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ManualTask_062xvrx_di" bpmnElement="Task_15naphk">
+      <bpmndi:BPMNShape id="ManualTask_062xvrx_di" bpmnElement="Task_GiveFeedback">
         <dc:Bounds x="515" y="247" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_09b4tu8_di" bpmnElement="Task_0lfmlyu">

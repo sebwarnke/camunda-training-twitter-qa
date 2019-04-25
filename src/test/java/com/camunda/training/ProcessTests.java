@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.camunda.bpm.engine.test.assertions.bpmn.AbstractAssertions.init;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.execute;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.job;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.jobQuery;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.runtimeService;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.taskService;
-import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.job;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,7 +44,7 @@ public class ProcessTests {
 
   @Mock
   private TwitterService twitterService;
-  
+
   @Before
   public void setup() {
     init(rule.getProcessEngine());
@@ -53,13 +53,12 @@ public class ProcessTests {
     Mocks.register("CreateTweetDelegate", new CreateTweetDelegate(twitterService));
   }
 
-  
   @Test
   @Deployment(resources = "tweet-approval.bpmn")
-  public void testHappyPath() throws Exception{
+  public void testHappyPath() throws Exception {
 
     when(twitterService.updateStatus(any(String.class))).thenReturn(mock(Status.class));
-    
+
     Map<String, Object> variables = new HashMap<String, Object>();
     variables.put("approved", true);
     variables.put("content", "Exercise 7 test - Sebastian");
@@ -83,24 +82,40 @@ public class ProcessTests {
     assertThat(jobList).hasSize(1);
     Job job = jobList.get(0);
     execute(job);
-    
+
     assertThat(processInstance).isEnded();
   }
-  
+
   @Test(expected = Exception.class)
   @Deployment(resources = "tweet-approval.bpmn")
   public void testTwice() throws Exception {
 
     when(twitterService.updateStatus(any(String.class))).thenReturn(mock(Status.class)).thenThrow(new Exception());
-    
-    ProcessInstance processInstance1 = runtimeService().createProcessInstanceByKey(KEY_OF_PROCESS_DEFINITION_UNDER_TEST).setVariable("content", "random content").startBeforeActivity("Task_0lfmlyu").execute();
+
+    ProcessInstance processInstance1 = runtimeService().createProcessInstanceByKey(KEY_OF_PROCESS_DEFINITION_UNDER_TEST)
+        .setVariable("content", "random content").startBeforeActivity("Task_0lfmlyu").execute();
     assertThat(processInstance1).isWaitingAt("Task_0lfmlyu");
     execute(job());
-    ProcessInstance processInstance2 = runtimeService().createProcessInstanceByKey(KEY_OF_PROCESS_DEFINITION_UNDER_TEST).setVariable("content", "random content").startBeforeActivity("Task_0lfmlyu").execute();
+    ProcessInstance processInstance2 = runtimeService().createProcessInstanceByKey(KEY_OF_PROCESS_DEFINITION_UNDER_TEST)
+        .setVariable("content", "random content").startBeforeActivity("Task_0lfmlyu").execute();
     assertThat(processInstance2).isWaitingAt("Task_0lfmlyu");
     execute(job());
-    
+
     assertThat(processInstance1).isNotNull();
-    
+
   }
+
+  @Test
+  @Deployment(resources = "tweet-approval.bpmn")
+  public void testNoApproval() {
+
+    Map<String, Object> variables = new HashMap<>();
+    variables.put("approved", false);
+
+    ProcessInstance processInstance = runtimeService().createProcessInstanceByKey(KEY_OF_PROCESS_DEFINITION_UNDER_TEST).setVariables(variables)
+        .startAfterActivity("UserTask_ReviewTweet").execute();
+
+    assertThat(processInstance).hasPassed("Task_GiveFeedback").isEnded();
+  }
+
 }
